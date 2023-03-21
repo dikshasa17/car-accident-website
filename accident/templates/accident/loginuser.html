@@ -1,0 +1,76 @@
+{% extends 'accident/base.html'%}
+{%  block content %}
+
+<style>  
+    body{
+     background: url("/static/accident/login.jpg") 50% 0 no-repeat fixed;
+     background-position:center;
+     background-attachment:fixed; 
+     background-repeat: no-repeat;
+     background-size: cover;
+    } 
+   
+  </style>
+  
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <h2>Login</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control" id="username" required>
+                </div>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+                  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+                      rel="stylesheet" type="text/css" /> 
+                <div class="form-group">
+                    <style type="text/css">
+   
+                        #toggle_pwd
+                        {   
+                            cursor: pointer;
+                        }
+                        span{
+                            position: absolute;
+                            right: 25px;
+                            transform: translate(0,-170%);
+                            
+                        }
+                    </style>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" required id="password"/>
+                    <span id="toggle_pwd" class="fa fa-fw fa-eye field_icon"></span>
+                </div>  
+    
+                <script type="text/javascript">
+                    $(function () {
+                        $("#toggle_pwd").click(function () {
+                            $(this).toggleClass("fa-eye fa-eye-slash");
+                           var type = $(this).hasClass("fa-eye-slash") ? "text" : "password";
+                            $("#password").attr("type", type);
+                        });
+                    });
+                </script>
+                <br>             
+                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <hr>
+            <div class="text-center">
+                Need an account? <a href="{% url 'signupuser' %}">Sign Up here</a>
+            </div>
+        </div>
+    </div>
+  
+{% endblock %}

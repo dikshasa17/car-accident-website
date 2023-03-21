@@ -1,0 +1,50 @@
+{% extends 'accident/base.html'%}
+
+{%  block content %}
+<body> 
+	<style>  
+  body{
+   background: url("/static/accident/shadow.jpg") 50% 0 no-repeat fixed;
+   background-position:center;
+   background-attachment:fixed; 
+   background-repeat: no-repeat;
+   background-size: cover;
+  } 
+</style>
+<h1> View Driver details</h1>
+<br>
+{% if accidents %}
+{% for accident in accidents %}
+
+<img src="{{ accident.image.url }}"  style="width:10%;height:10%;border: 2px solid;"> 
+<br>
+<br>
+<p><b>Name of the Driver:</b>  &nbsp;&nbsp;  {{ accident.user_name }}</p>
+<p><b>Email Address:</b>  &nbsp;          {{ accident.user_email }}</p>
+<p><b>Mobile Number:</b>     &nbsp;        {{ accident.user_mobile }}</p>
+<p><b>Permanent Address:</b>  &nbsp;       {{ accident.address }}</p>
+<p><b>Vehicle Number Plate:</b>  &nbsp;    {{ accident.vehicle_number_plate }}</p>
+<p><b>Blood Group:</b>      &nbsp;  &nbsp; &nbsp;        {{ accident.bloodgrp }}</p>
+<p><b>Relative No.1:</b>   &nbsp;          {{ accident.emergency_no1 }}</p>
+<p><b>Relative No.2:</b>    &nbsp;         {{ accident.emergency_no2}}</p>
+
+<button type="button" class="btn btn-danger" onclick="$('#delete').click()">Delete</button>
+<a href="{% url 'editdetails' %}" role="button" class= "btn btn-primary">Edit</a>
+
+<form style='display: none;' method="POST" action="{% url 'deletedetails' %}">
+    {% csrf_token %}
+    <button id="delete" type="submit">Delete</button>
+</form>
+
+<br>
+<br>
+{% endfor %}
+{% else %}
+
+<p>{{msg}}</p>
+<p>{{ msgs }}</p>
+
+{% endif %}
+{% endblock %}
+
+

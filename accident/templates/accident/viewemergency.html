@@ -1,0 +1,32 @@
+{% extends 'accident/base.html'%}
+
+{%  block content %}
+<body> 
+	<style>  
+  body{
+   background: url("/static/accident/shadow5.jpg") 50% 0 no-repeat fixed;
+   background-position:center;
+   background-attachment:fixed; 
+   background-repeat: no-repeat;
+   background-size: cover;
+  } 
+  </style>
+<h1> View Emergency details</h1>
+<br>
+{% if accidents %}
+{% for m in accidents %}
+<br>
+<br>
+<p><b>Name of the Citizen:</b>  &nbsp;&nbsp;  {{m.form_filler_name}}</p>
+<p><b>:</b>  &nbsp;&nbsp;  {{m.mobile_no}}</p>
+<p><b>Name of the Citizen:</b>  &nbsp;&nbsp;  {{m.accident_vehicle_number}}</p>
+<p><b>Name of the Citizen:</b>  &nbsp;&nbsp;  {{m.location_link}}</p>
+<img src="{{ m.accident_image.url }}"  style="width:10%;height:10%;border: 2px solid;"> 
+<br>
+<br>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
+
+

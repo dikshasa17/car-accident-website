@@ -1,0 +1,116 @@
+{% extends 'accident/base.html'%}
+{% load static %}
+{%  block content %}
+
+   <style>
+    *{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+h1{
+	color: #0e0d0d;
+	font-weight: bold;
+	transition: 0.5s ease-in-out;
+	text-align: center;
+}
+h3{
+	color:aliceblue;
+}
+
+button{
+	border:none;
+	border-radius: 8px;
+	padding: 10px;
+	background:#022496; 
+	color:white;
+	letter-spacing: 1.5px;
+	font-size: 15px;
+	
+}
+h6:hover{
+	transform: scale(1.2);
+}	
+  </style>
+
+</head>
+
+<body> 
+	<style>  
+  body{
+   background: url("/static/accident/home2.jpg") 50% 0 no-repeat fixed;
+   background-position:center;
+   background-attachment:fixed; 
+   background-repeat: no-repeat;
+   background-size: cover;
+  } 
+</style>
+</body>
+<br>
+
+<div class="container">
+<h6 style="font-family:'Jazz LET, fantasy';font-weight:Bold;color:black ;font-size: 60px;" class=mx-auto my-0 text-uppercase"">Emergency Medical Services</h6>
+
+
+
+	{% if not user.is_authenticated %}
+<b><a  href="{% url 'emergencydetail' %}" role="button" class= "btn btn-danger" style="font-family:'fantasy';font-size: 25px;margin-left:100px;
+		display: block;margin-right:100px; ">Fill Emergency Form </a> 
+<br>
+<p><marquee  width="60%" direction="up" style="background-color:rgba(250, 251, 252, 0.863);color:black;padding: 20px;border-radius:2%;font-weight: bold; color: #04010f;text-align: center;" 
+	scrolldelay="100"><p>
+<div>
+<p>"Road crashes claimed more than 200,000 lives in India alone and contributed to the economic loss of approximately 3% GDP. 17 people die every hour on Indian roads and around 4.07 LAC."</p>
+<p>As per the reports, nearly 50 per cent of road fatalities would not have happened had medical attention been given within the first hour. Become a GOOD CITIZEN and help us reduce this number.</p> 
+<p>We take this pledge to save someone's life and take it upon as our moral duty being a good citizen by just filling up this Emergency form when in need.</p>
+</marquee>
+</div>
+{% endif%}
+
+
+
+ {% if user.is_authenticated != user.is_superuser %}
+ <h4><marquee style="font-family:Arial;padding: 4px;font-weight: bold; color: #141414;background-color: rgba(255, 255, 255, 0.247);" scrolldelay="130">Welcome User: <b>{{user}}</b></marquee></h4>
+ <b><a  href="{% url 'emergencydetail' %}" role="button" class= "btn btn-danger" style="font-family:'fantasy';font-size: 25px;margin-left:100px;
+	display: block;margin-right:100px; ">Fill Emergency Form </a> 
+	<br>
+ <div style="background-color: rgba(240, 248, 255, 0.639);">
+	<p>"Road crashes claimed more than 200,000 lives in India alone and contributed to the economic loss of approximately 3% GDP. 17 people die every hour on Indian roads and around 4.07 LAC."</p>
+	<p>As per the reports, nearly 50 per cent of road fatalities would not have happened had medical attention been given within the first hour. Become a GOOD CITIZEN and help us reduce this number.</p> 
+	<p>We take this pledge to save someone's life and take it upon as our moral duty being a good citizen by just filling up this Emergency form when in need.</p>
+	
+	</div>
+<a  href="{% url 'userdetail' %}" role="button" class= "btn btn-dark" style="font-family:'Arail';font-size: 23px;margin-left:100px;
+display: block;margin-right:100px; "> Fill Driver Detail Form </a> 
+<a  href="{% url 'viewdetails' %}" role="button" class= "btn btn-info" style="font-family:'Arail';font-size: 23px;margin-left:100px;
+display: block;margin-right:100px; "> View Driver Detail Form </a>
+<br>
+<p style="background-color: rgba(240, 248, 255, 0.639);">Kindly Fill up the above Driver's Detail form, so that EMS can get your information from anywhere. You have to keep on updating your details so that, we will get your latest information.</p>
+{% endif %}
+
+{% if user.is_superuser %}
+<h4><marquee style="font-family:Arial;padding: 4px;font-weight: bold; color: #f7f3f3f8;background-color: rgba(0, 0, 0, 0.74);" scrolldelay="100">Welcome Admin: <b>{{user}}</b></marquee>
+</h4>
+<div style="background-color: rgba(240, 248, 255, 0.639);">
+	<p>"Road crashes claimed more than 200,000 lives in India alone and contributed to the economic loss of approximately 3% GDP. 17 people die every hour on Indian roads and around 4.07 LAC."</p>
+	<p>As per the reports, nearly 50 per cent of road fatalities would not have happened had medical attention been given within the first hour. Become a GOOD CITIZEN and help us reduce this number.</p> 
+	<p>We take this pledge to save someone's life and take it upon as our moral duty being a good citizen.</p>
+	</div>
+<b><a  href="{% url 'emergencydetail' %}" role="button" class= "btn btn-danger" style="font-family:'fantasy';font-size: 25px;margin-left:100px;
+	display: block;margin-right:100px; ">View Emergency Form </a> 
+<a  href="{% url 'viewdetails' %}" role="button" class= "btn btn-dark" style="font-family:'Arail';font-size: 25px;margin-left:100px;
+display: block;margin-right:100px; "> View Driver Detail Form </a>
+
+<p>.</p>
+
+{% endif %}
+</b>
+</h3> 
+<br>
+
+    </div>
+    </div>
+	
+
+    {% endblock%}
