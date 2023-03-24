@@ -13,20 +13,19 @@
 </style>
 <h1> View Driver details</h1>
 <br>
-{% if accidents %}
-{% for accident in accidents %}
+{% if user_details %}
 
-<img src="{{ accident.image.url }}"  style="width:10%;height:10%;border: 2px solid;"> 
-<br>
-<br>
-<p><b>Name of the Driver:</b>  &nbsp;&nbsp;  {{ accident.user_name }}</p>
-<p><b>Email Address:</b>  &nbsp;          {{ accident.user_email }}</p>
-<p><b>Mobile Number:</b>     &nbsp;        {{ accident.user_mobile }}</p>
-<p><b>Permanent Address:</b>  &nbsp;       {{ accident.address }}</p>
-<p><b>Vehicle Number Plate:</b>  &nbsp;    {{ accident.vehicle_number_plate }}</p>
-<p><b>Blood Group:</b>      &nbsp;  &nbsp; &nbsp;        {{ accident.bloodgrp }}</p>
-<p><b>Relative No.1:</b>   &nbsp;          {{ accident.emergency_no1 }}</p>
-<p><b>Relative No.2:</b>    &nbsp;         {{ accident.emergency_no2}}</p>
+<img src="{{ user_details.user_image_url }}"  style="width:10%;height:10%;border: 2px solid;"> 
+
+<p><b>Username of the Driver:</b>  &nbsp;&nbsp;  {{ user_details.username }}</p>
+<p><b>Full name of the Driver:</b>  &nbsp;&nbsp;  {{ user_details.full_name }}</p>
+<p><b>Email Address:</b>  &nbsp;          {{ user_details.email }}</p>
+<p><b>Mobile Number:</b>     &nbsp;        {{ user_details.mobile_no }}</p>
+<p><b>Vehicle Number Plate:</b>  &nbsp;    {{ user_details.vehicle_number_plate }}</p>
+<p><b>Permanent Address:</b>  &nbsp;       {{ user_details.address }}</p>
+<p><b>Blood Group:</b>      &nbsp;  &nbsp; &nbsp;        {{ user_details.bloodgrp }}</p>
+<p><b>Relative No.1:</b>   &nbsp;          {{ user_details.emergency_no1 }}</p>
+<p><b>Relative No.2:</b>    &nbsp;         {{ user_details.emergency_no2}}</p>
 
 <button type="button" class="btn btn-danger" onclick="$('#delete').click()">Delete</button>
 <a href="{% url 'editdetails' %}" role="button" class= "btn btn-primary">Edit</a>
@@ -38,7 +37,7 @@
 
 <br>
 <br>
-{% endfor %}
+
 {% else %}
 
 <p>{{msg}}</p>

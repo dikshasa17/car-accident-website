@@ -25,14 +25,15 @@
 {% if searched %}
 <h1> You Searched for {{ searched }} </h1>
 <br/>
-{% for m in users %}
+{% for accident in accidents_list %}
 <div style="border: 2px;background-color: rgba(240, 248, 255, 0.555);">
-<img src="{{ m.accident_image.url }}"  style="width:25%;height:25%;border: 2px solid;"> 
+<img src="{{ accident.accident_image_url }}"  style="width:25%;height:25%;border: 2px solid;"> 
 <br><br>
-<p><b>Name of the Civilian:</b>  &nbsp;&nbsp;  {{m.form_filler_name}}</p>
-<p><b>Civilian Mobile No.</b>  &nbsp;&nbsp;  {{m.mobile_no}}</p>
-<p><b>Victim Number_Plate:</b>  &nbsp;&nbsp;  {{m.accident_vehicle_number}}</p>
-<p><b>Accident location:</b>  &nbsp;&nbsp;  {{m.location_link}}</p>
+<p><b>Name of the Civilian:</b>  &nbsp;&nbsp;  {{accident.full_name}}</p>
+<p><b>Civilian Mobile No.</b>  &nbsp;&nbsp;  {{accident.mobile_no}}</p>
+<p><b>Victim Number_Plate:</b>  &nbsp;&nbsp;  {{accident.accident_vehicle_number}}</p>
+<p><b>Accident location:</b>  &nbsp;&nbsp;  {{accident.location_link}}</p>
+<p><b>Form filled date-time:</b>  &nbsp;&nbsp;  {{accident.form_fill_date_time}}</p>
 </div>
 <br>
 <br/>

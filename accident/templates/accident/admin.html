@@ -15,7 +15,7 @@
     <h2 class="text-center">Emergency Accident Details</h2>   <br>
     <div class="row">
         <div class=" col-md-8 offset-2">
-            <form class="d-flex" method="POST" action="{% url 'search_users' %}">
+            <form class="d-flex" method="POST" action="{% url 'search_emergency' %}">
             {% csrf_token %}
                     <input class="form-control me-2" aria-label="Search" type="search" placeholder="Search Driver's information from the given Number_Plate" name="searched"><button class="btn btn-dark btn-lg" type="submit">Search</button>
                         
@@ -35,20 +35,22 @@
         <th>Civilian_Name <br></th>
         <th>Civilian_Mobile_No.</th>
         <th>Victim_Number_Plate</th>
+        <th>Form filled date-time</th>
         <th>Accident_location</th>
         <th>Victim Vehicle_image</th>
         
     </tr>
   </thead>
   <tbody>
-    {% if accidents %}
-    {% for m in accidents %}
+    {% if accidents_list|length > 0 %}
+    {% for accident in accidents_list %}
     <tr>
-        <td>{{ m.form_filler_name }}</td>
-        <td>{{ m.mobile_no }} </td>
-        <td>{{ m.accident_vehicle_number }}</td> 
-        <td><a href="{{ m.location_link }}" " target="_blank" >{{ m.location_link }}</a></td>
-        <td><img src="{{ m.accident_image.url }}"  style="width:60%;height:60%;border: 2px solid;"> </td>
+        <td>{{ accident.full_name }}</td>
+        <td>{{ accident.mobile_no }} </td>
+        <td>{{ accident.accident_vehicle_number }}</td> 
+        <td>{{accident.form_fill_date_time}}</td>
+        <td><a href="{{ accident.location_link }}" target="_blank" >{{ accident.location_link }}</a></td>
+        <td><img src="{{ accident.accident_image_url }}"  style="width:60%;height:60%;border: 2px solid;"> </td>
         
     </tr>
   {% endfor %}

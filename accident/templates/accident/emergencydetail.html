@@ -23,7 +23,21 @@
 <br>
 <form method="POST" enctype='multipart/form-data'>
     {% csrf_token %}
-{{ form.as_p }}
+   
+    <label for="full-name">Form filler full name:</label>
+    <input type="text" id="full-name" name="full-name" required>
+    <br>    
+    <label for="mobile-no">Mobile no. :</label>
+    <input type="text" id="mobile-no" name="mobile-no" maxlength="10" required>
+    <br>
+    <label for="img">Upload accident image:</label>
+    <input type="file" id="img" name="img" accept="image/*">
+    <br>
+    <label for="accident-vehicle-number">Accident vehicle number :</label>
+    <input type="text" id="accident-vehicle-number" name="accident-vehicle-number" required>
+    <br>
+    <label for="location-link">Location link:</label>
+    <input type="url" id="location-link" name="location-link" required>
 
 <button type="submit" class="btn btn-primary">Submit</button>
 

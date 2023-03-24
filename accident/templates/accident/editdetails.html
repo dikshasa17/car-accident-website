@@ -16,13 +16,46 @@
 <br>
 <h2>{{error}}</h2>
 
-<form method="post" enctype='multipart/form-data' novalidate>
+<form method="post" enctype='multipart/form-data'>
     {% csrf_token %}
-    {{ form.as_p }}
+    
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="{{ user_details.username }}" disabled>
+    <br>
+    <label for="full-name">Full name:</label>
+    <input type="text" id="full-name" name="full-name" value="{{ user_details.full_name }}">
+    <br>
+    <label for="mobile-no">Mobile no. :</label>
+    <input type="text" id="mobile-no" name="mobile-no" value="{{ user_details.mobile_no }}">
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ user_details.email }}">
+    <br>
+    <!-- Need to set image default value here-->
+    <label for="img">Upload image:</label>
+    <input type="file" id="img" name="img" accept="image/*" value="{{user_details.user_image_url}}">
 
+    <br>
+    <label for="vehicle-number-plate">Vehicle number plate:</label>
+    <input type="text" id="vehicle-number-plate" name="vehicle-number-plate" value="{{ user_details.vehicle_number_plate }}">
+    <br>
+    <label for="address">Address:</label>
+    <textarea id="address" name="address">{{ user_details.address }}</textarea>
+    <br>
+    <label for="blood-group">Blood group:</label>
+    <input type="text" id="blood-group" name="blood-group" value="{{ user_details.bloodgrp }}">
+    <br>
+    <label for="emergency-no-1">Emergency no. 1:</label>
+    <input type="text" id="emergency-no-1" name="emergency-no-1" value="{{ user_details.emergency_no1 }}">
+    <br>
+    <label for="emergency-no-2">Emergency no. 2:</label>
+    <input type="text" id="emergency-no-2" name="emergency-no-2" value="{{ user_details.emergency_no2}}">
+    <br>
 <button type="submit" class="btn btn-primary">SAVE</button>
 
 </form>
+
 <br>
 <br>
+
 {% endblock %}
