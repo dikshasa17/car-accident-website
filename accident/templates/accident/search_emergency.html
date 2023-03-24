@@ -29,14 +29,13 @@
 <div style="border: 2px;background-color: rgba(240, 248, 255, 0.555);">
 <img src="{{ accident.accident_image_url }}"  style="width:25%;height:25%;border: 2px solid;"> 
 <br><br>
-<p><b>Name of the Civilian:</b>  &nbsp;&nbsp;  {{accident.full_name}}</p>
-<p><b>Civilian Mobile No.</b>  &nbsp;&nbsp;  {{accident.mobile_no}}</p>
-<p><b>Victim Number_Plate:</b>  &nbsp;&nbsp;  {{accident.accident_vehicle_number}}</p>
-<p><b>Accident location:</b>  &nbsp;&nbsp;  {{accident.location_link}}</p>
-<p><b>Form filled date-time:</b>  &nbsp;&nbsp;  {{accident.form_fill_date_time}}</p>
+<p><b>Name of the Civilian:</b>&nbsp;&nbsp;{{accident.full_name}}</p>
+<p><b>Civilian Mobile No.</b>&nbsp;&nbsp;{{accident.mobile_no}}</p>
+<p><b>Victim Number_Plate:</b>&nbsp;&nbsp;{{accident.accident_vehicle_number}}</p>
+<p><b>Accident location:</b>&nbsp;&nbsp;<a href="{{accident.location_link}}">{{accident.location_link}}</a></p>
+<p><b>Form filled date-time:</b>&nbsp;&nbsp;{{accident.form_fill_date_time}}</p>
 </div>
-<br>
-<br/>
+<br><br>
 {% endfor%}
 
 {% else %}

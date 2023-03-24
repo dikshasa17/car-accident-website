@@ -16,6 +16,7 @@ firebaseConfig = {
     "appId": "1:878884256845:web:4107ffaba688fad5a9b004",
     "databaseURL" : "https://fir-login-crud-image-default-rtdb.firebaseio.com/"
 }
+
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 
@@ -229,9 +230,6 @@ def viewemergency(request):
                 accidents_list.append(accident.val())
 
         return render(request, 'accident/admin.html', {'accidents_list': accidents_list})
-    # else:
-    #     accidents = Emergency.objects.all()
-    #     return render(request, 'accident/viewemergency.html', {'accidents': accidents})
     
 def search_emergency(request):
     if request.method == "POST":

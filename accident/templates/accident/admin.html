@@ -42,7 +42,6 @@
     </tr>
   </thead>
   <tbody>
-    {% if accidents_list|length > 0 %}
     {% for accident in accidents_list %}
     <tr>
         <td>{{ accident.full_name }}</td>
@@ -51,10 +50,8 @@
         <td>{{accident.form_fill_date_time}}</td>
         <td><a href="{{ accident.location_link }}" target="_blank" >{{ accident.location_link }}</a></td>
         <td><img src="{{ accident.accident_image_url }}"  style="width:60%;height:60%;border: 2px solid;"> </td>
-        
     </tr>
   {% endfor %}
-  {% endif %}
 
   </tbody>
 </table>

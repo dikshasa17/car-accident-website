@@ -27,19 +27,19 @@
 {% if searched %}
 <h1> You Searched for {{ searched }} </h1>
 <br/>
-{% for user_details in users_list %}
+{% for user in users_list %}
     <hr>
-    <p ><img src="{{ user_details.user_image_url }}"  style="width:10%;height:10%;border: 2px solid;"> </p>
+    <p><img src="{{ user.user_image_url }}"  style="width:10%;height:10%;border: 2px solid;"></p>
     <br>
-    <p><b>Username of the Driver:</b>  &nbsp;&nbsp;  {{ user_details.username }}</p>
-    <p><b>Full name of the Driver:</b>  &nbsp;&nbsp;  {{ user_details.full_name }}</p>
-    <p><b>Email Address:</b>  &nbsp;          {{ user_details.email }}</p>
-    <p><b>Mobile Number:</b>     &nbsp;        {{ user_details.mobile_no }}</p>
-    <p><b>Vehicle Number Plate:</b>  &nbsp;    {{ user_details.vehicle_number_plate }}</p>
-    <p><b>Permanent Address:</b>  &nbsp;       {{ user_details.address }}</p>
-    <p><b>Blood Group:</b>      &nbsp;  &nbsp; &nbsp;        {{ user_details.bloodgrp }}</p>
-    <p><b>Relative No.1:</b>   &nbsp;          {{ user_details.emergency_no1 }}</p>
-    <p><b>Relative No.2:</b>    &nbsp;         {{ user_details.emergency_no2}}</p>
+    <p><b>Username of the Driver:</b>&nbsp;&nbsp;{{ user.username }}</p>
+    <p><b>Full name of the Driver:</b>&nbsp;&nbsp;{{ user.full_name }}</p>
+    <p><b>Email Address:</b>&nbsp;&nbsp;{{ user.email }}</p>
+    <p><b>Mobile Number:</b>&nbsp;&nbsp;{{ user.mobile_no }}</p>
+    <p><b>Vehicle Number Plate:</b>&nbsp;&nbsp;{{ user.vehicle_number_plate }}</p>
+    <p><b>Permanent Address:</b>&nbsp;&nbsp;{{ user.address }}</p>
+    <p><b>Blood Group:</b>&nbsp;&nbsp;{{ user.bloodgrp }}</p>
+    <p><b>Relative No.1:</b>&nbsp;&nbsp;{{ user.emergency_no1 }}</p>
+    <p><b>Relative No.2:</b>&nbsp;&nbsp;{{ user.emergency_no2}}</p>
     <br>
 {% endfor %}
 
