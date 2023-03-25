@@ -40,6 +40,7 @@
     <p><b>Blood Group:</b>&nbsp;&nbsp;{{ user.bloodgrp }}</p>
     <p><b>Relative No.1:</b>&nbsp;&nbsp;{{ user.emergency_no1 }}</p>
     <p><b>Relative No.2:</b>&nbsp;&nbsp;{{ user.emergency_no2}}</p>
+    <a href="{% url 'user_data' user.username %}">See Realtime Data</a>
     <br>
 {% endfor %}
 

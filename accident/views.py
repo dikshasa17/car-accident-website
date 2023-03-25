@@ -5,16 +5,13 @@ from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
 import pyrebase
 
+# Configure below firebase connection
 firebaseConfig = {
-    "apiKey": "AIzaSyCoxQzhVKNb4QM1Rj5hDaWIQgMNji5jNY4",
-    "authDomain": "fir-login-crud-image.firebaseapp.com",
-    "projectId": "fir-login-crud-image",
-    "storageBucket": "fir-login-crud-image.appspot.com",
-    "messagingSenderId": "878884256845",
-    "appId": "1:878884256845:web:4107ffaba688fad5a9b004",
-    "databaseURL" : "https://fir-login-crud-image-default-rtdb.firebaseio.com/"
+
 }
 
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -75,6 +72,7 @@ def userdetail(request):
             fireb_upload = storage.child(f"users_image/{request.user}.{file_format}").put(file)
             image_url=storage.child(f"users_image/{request.user}.{file_format}").get_url(None)
 
+            # Setting a default location, so not saving location of user for now. You can change it.
             data = {
                 "username":request.user.username,
                 "full_name":request.POST['full-name'],
@@ -86,8 +84,14 @@ def userdetail(request):
                 "emergency_no1":request.POST['emergency-no-1'],
                 "emergency_no2":request.POST['emergency-no-2'],
                 "user_image_url":image_url,
-                "user_image_token": fireb_upload['downloadTokens']
+                "user_image_token": fireb_upload['downloadTokens'],
+                "seatbelt_on":False,
+                "alcohol_detected":False,
+                "collision_detected":False,
+                "vib_sensor_on": False,
+                "flame_detected":False,
             }
+            # Storing fire_sensor_datetimestamps in lists because we want it to be ordered by entry datetime stamps (as we'll be pushing and popping)
             
             # Saving with custom id: username
             db.child("users").child(request.user).set(data)
@@ -135,16 +139,19 @@ def deletedetails(request):
             return render(request, 'accident/viewdetails.html', {'msgs': "Some server error occurred while deleting the details!"})
 
 def editdetails(request):
+    user_details = db.child("users").order_by_child("username").equal_to(request.user.username).limit_to_first(1).get()
+    user_details=user_details.val()
+    for k, v in user_details.items():
+        user_details=v
+
     if request.method == 'GET':
-        user_details = db.child("users").order_by_child("username").equal_to(request.user.username).limit_to_first(1).get()
-        user_details=user_details.val()
-        for k, v in user_details.items():
-            user_details=v
         return render(request,'accident/editdetails.html',{'user_details': user_details})
     
     elif request.method == 'POST':        
-
-        file= request.FILES['img']
+        try:
+            file= request.FILES['img']
+        except:
+            return render(request,'accident/editdetails.html',{'user_details': user_details,'error': "No file was selected"})
         file_format = file.name.split('.')[-1] 
         # Replacement won't be done if extensions of image are different so:
         # Deleting previous image file:
@@ -171,7 +178,12 @@ def editdetails(request):
             "emergency_no1":request.POST['emergency-no-1'],
             "emergency_no2":request.POST['emergency-no-2'],
             "user_image_url":image_url,
-            "user_image_token": fireb_upload['downloadTokens']
+            "user_image_token": fireb_upload['downloadTokens'],
+            "seatbelt_on":user_details['seatbelt_on'],
+            "alcohol_detected":user_details['alcohol_detected'],
+            "collision_detected":user_details['collision_detected'],
+            "vib_sensor_on":user_details['vib_sensor_on'],
+            "flame_detected":user_details['flame_detected'],
         }
         
         # Saving with custom id: username
@@ -183,9 +195,10 @@ def search_users(request):
         users_list=[]
         searched =request.POST['searched']
         # 'Contains' search query
-        users = db.child("users").order_by_child("vehicle_number_plate").end_at(searched+"\uf8ff").get()
+        users = db.child("users").get()
         for user in users.each():
-            users_list.append(user.val())
+            if searched in user.val()['vehicle_number_plate']:
+                users_list.append(user.val())
 
         return render(request, 'accident/search_users.html',{'searched':searched, 'users_list':users_list})
     else:
@@ -213,7 +226,7 @@ def emergencydetail(request):
                 "location_link": request.POST['location-link'],
                 "form_fill_date_time": form_filled_date_time
             }
-            
+
             # Saving with custom id: username
             db.child("form_fillers").push(data)
 
@@ -224,26 +237,53 @@ def emergencydetail(request):
 def viewemergency(request):
     if request.user.is_superuser == True:
         accidents_list=[]
-        accidents = db.child("form_fillers").order_by_child("fill_date_time").get()
+        accidents = db.child("form_fillers").order_by_child("form_fill_date_time").get()
         if accidents.val():
             for accident in accidents.each():
                 accidents_list.append(accident.val())
 
         return render(request, 'accident/admin.html', {'accidents_list': accidents_list})
-    
+
 def search_emergency(request):
     if request.method == "POST":
         accidents_list=[]
         searched =request.POST['searched']
         # 'Contains' search query
-        accidents = db.child("form_fillers").order_by_child("accident_vehicle_number").end_at(searched+"\uf8ff").get()
+        accidents = db.child("form_fillers").get()
         for accident in accidents.each():
-            accidents_list.append(accident.val())
+            if searched in accident.val()['accident_vehicle_number']:
+                accidents_list.append(accident.val())
 
         return render(request, 'accident/search_emergency.html',{'searched':searched, 'accidents_list':accidents_list})
     else:
         return render(request, 'accident/search_emergency.html')
+    
+def user_data(request, username):
+    if request.user.is_superuser == True:
+        user_details = db.child("users").order_by_child("username").equal_to(username).limit_to_first(1).get()
+        if user_details.val():
+            user_details=user_details.val()
+            for k, v in user_details.items():
+                user_details=v
 
+        return render(request, 'accident/userdata.html', {'user_details':user_details})
 
+# API
+@api_view(['GET'])
+def user_realtime_data(request, username):
+    # Responding with the user details part which is being updated by the hardware
+    user_details = db.child("users").order_by_child("username").equal_to(username).limit_to_first(1).get()
+    if user_details.val():
+        user_details=user_details.val()
+        for k, v in user_details.items():
+            user_details=v
+    data = {
+        "seatbelt_on":user_details['seatbelt_on'],
+        "alcohol_detected":user_details['alcohol_detected'],
+        "collision_detected":user_details['collision_detected'],
+        "vib_sensor_on":user_details['vib_sensor_on'],
+        "flame_detected":user_details['flame_detected'],
+    }
+    return JsonResponse(data)
 
 

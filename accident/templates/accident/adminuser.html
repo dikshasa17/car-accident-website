@@ -32,6 +32,7 @@
       <tr>
           <th>Username<br></th>
           <th>Full name<br></th>
+          <th>See Realtime data</th>
           <th>Email<br></th>
           <th>Mobile</th>
           <th>Number_Plate</th>
@@ -48,6 +49,7 @@
       <tr>
           <td>{{ user.username }}</td>
           <td>{{ user.full_name }}</td>
+          <td><a href="{% url 'user_data' user.username %}">Click to view</a></td>
           <td>{{ user.email }}</td>
           <td>{{ user.mobile_no }}</td>
           <td>{{ user.vehicle_number_plate}}</td>

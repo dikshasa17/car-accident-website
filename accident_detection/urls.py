@@ -38,9 +38,14 @@ urlpatterns = [
     path('search_users/', views.search_users, name='search_users'),
     path('search_emergency/', views.search_emergency, name='search_emergency'),
 
+    path('user_data/<username>/', views.user_data, name='user_data'),
+
     #Emergency
     path('emergency/',views.emergencydetail, name='emergencydetail'),
     path('viewemergency/',views.viewemergency, name='viewemergency'),
+
+    #API
+    path('user_realtime_data/<username>/',views.user_realtime_data,name='user_realtime_data'),
 
 ]
 

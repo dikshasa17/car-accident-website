@@ -1,0 +1,210 @@
+{% extends 'accident/base.html'%}
+{%  block content %}
+
+<style>
+    .green{
+        color: green;
+    }
+    .red{
+        color: red;
+    }
+    #chart-collection{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: center;
+    }
+</style>
+
+<p><b>Username of the Driver:</b>  &nbsp;&nbsp;  {{ user_details.username }}</p>
+<p><b>Full name of the Driver:</b>  &nbsp;&nbsp;  {{ user_details.full_name }}</p>
+<p><b>Email Address:</b>&nbsp;&nbsp;{{ user_details.email }}</p>
+<p><b>Mobile Number:</b>&nbsp;&nbsp;{{ user_details.mobile_no }}</p>
+<p><b>Vehicle Number Plate:</b>&nbsp;&nbsp;{{ user_details.vehicle_number_plate }}</p>
+<p><b>Permanent Address:</b>&nbsp;&nbsp;{{ user_details.address }}</p>
+<p><b>Blood Group:</b>&nbsp;&nbsp;{{ user_details.bloodgrp }}</p>
+<p><b>Relative No.1:</b>&nbsp;&nbsp;{{ user_details.emergency_no1 }}</p>
+<p><b>Relative No.2:</b>&nbsp;&nbsp;{{ user_details.emergency_no2}}</p>
+
+<h1>Current driver's car status</h1>
+<div id="realtime-data"></div>
+
+<div>
+    <!-- To show chart -->
+    <div id="chart-collection">
+        <div style="width: 50%;">
+            <canvas id="mySeatbeltChart"></canvas>
+        </div>
+        <div style="width: 50%;">
+            <canvas id="myAlcoholChart"></canvas>
+        </div>
+        <div style="width: 50%;">
+            <canvas id="myCollisionChart"></canvas>
+        </div>
+        <div style="width: 50%;">
+            <canvas id="myVibSensorChart"></canvas>
+        </div>
+        <div style="width: 50%;">
+            <canvas id="myFlameChart"></canvas>
+        </div>
+    </div>
+   
+</div>
+
+<p>Driver's car location:</p>
+<div><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60289.97845172287!2d72.90165883125!3d19.189800800000008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b99bc31b9bd3%3A0xb7c4cccba1de9ba3!2sThe%20Food%20Town!5e0!3m2!1sen!2sin!4v1679668146268!5m2!1sen!2sin" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+
+<!-- Chart JS CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+    //Setting initial labels and items
+    labels=[]
+    itemsSeatbelt=[]
+    itemsAlcohol=[]
+    itemsCollision=[]
+    itemsVibSensor=[]
+    itemsFlame=[]
+
+    var ctxSeatbelt = document.getElementById('mySeatbeltChart').getContext('2d');
+    var ctxAlcohol = document.getElementById('myAlcoholChart').getContext('2d');
+    var ctxCollision = document.getElementById('myCollisionChart').getContext('2d');
+    var ctxVibSensor = document.getElementById('myVibSensorChart').getContext('2d');
+    var ctxFlame = document.getElementById('myFlameChart').getContext('2d');
+
+    var mySeatbeltChart;
+    var myAlcoholChart;
+    var myCollisionChart;
+    var myVibSensorChart;
+    var myFlameChart;
+
+    function update_page(username) {
+        
+        $.ajax({
+            url: "{% url 'user_realtime_data' user_details.username %}",
+            method: "GET",
+            success: function (data) {
+                
+                if (mySeatbeltChart) {
+                    mySeatbeltChart.destroy();
+                }
+                if (myAlcoholChart) {
+                    myAlcoholChart.destroy();
+                }
+                if (myCollisionChart) {
+                    myCollisionChart.destroy();
+                }
+                if (myVibSensorChart) {
+                    myVibSensorChart.destroy();
+                }
+                if (myFlameChart) {
+                    myFlameChart.destroy();
+                }
+
+                const now = new Date();
+                const year = now.getFullYear();   // e.g. 2021
+                const month = now.getMonth();     // 0-based (January is 0)
+                const day = now.getDate();        // 1-31
+                const hour = now.getHours();      // 0-23
+                const minute = now.getMinutes();  // 0-59
+                const second = now.getSeconds();  // 0-59
+
+                labels.push(`${day}/${month+1}/${year} ${hour}:${minute}:${second}`);
+
+                itemsSeatbelt.push(data.seatbelt_on);
+                itemsAlcohol.push(data.alcohol_detected);
+                itemsCollision.push(data.collision_detected);
+                itemsVibSensor.push(data.vib_sensor_on);
+                itemsFlame.push(data.flame_detected);
+
+                if(labels.length>5){
+                    labels.splice(0,1);
+                    itemsSeatbelt.splice(0,1);
+                    itemsAlcohol.splice(0,1);
+                    itemsCollision.splice(0,1);
+                    itemsVibSensor.splice(0,1);
+                    itemsFlame.splice(0,1);
+                }
+                
+                mySeatbeltChart = lineChart('Seatbelt On',ctxSeatbelt,labels,itemsSeatbelt,'rgb(75, 192, 192)')
+                myAlcoholChart = lineChart('Alcohol Detected',ctxAlcohol,labels,itemsAlcohol,'#77FF33')
+                myCollisionChart = lineChart('Collision Detected',ctxCollision,labels,itemsCollision,'#FF9F40')
+                myVibSensorChart = lineChart('Motion Detected',ctxVibSensor,labels,itemsVibSensor,'#35A2EB')
+                myFlameChart = lineChart('Flame Detected',ctxFlame,labels,itemsFlame,'#FF5176')
+
+                $("#realtime-data").empty();
+
+                if(data.seatbelt_on){
+                    $('#realtime-data').append(
+                        `<div class="green">Seatbelt is on.</div>`
+                    )
+                }
+                else{
+                    $('#realtime-data').append(
+                        `<div class="red">Seatbelt is not on.</div>`
+                    )
+                }
+
+                if(data.alcohol_detected){
+                    $('#realtime-data').append(
+                        `<div class="red">The driver has drank alcohol.</div>`
+                    )
+                }
+                else{
+                    $('#realtime-data').append(
+                        `<div class="green">The driver is sober.</div>`
+                    )
+                }
+
+                if(data.collision_detected){
+                    $('#realtime-data').append(
+                        `<div class="red">The car has crashed.</div>`
+                    )
+                }
+                else{
+                    $('#realtime-data').append(
+                        `<div class="green">The car has not crashed.</div>`
+                    )
+                }
+
+                if(data.vib_sensor_on){
+                    $('#realtime-data').append(
+                        `<div class="green">The car is moving.</div>`
+                    )
+                }
+                else{
+                    $('#realtime-data').append(
+                        `<div class="red">The car is not moving.</div>`
+                    )
+                }
+
+                if(data.flame_detected){
+                    $('#realtime-data').append(
+                        `<div class="red">The car has caught fire</div>`
+                    )
+                }
+                else{
+                    $('#realtime-data').append(
+                        `<div class="green">The car has not caught fire.</div>`
+                    )
+                }
+                
+            }
+        })
+    };
+
+    
+    $(document).ready(function (){
+        update_page("{{ user_details.username }}");
+    })
+
+    //To update page after every 3 second
+    setInterval(function(){
+        update_page("{{ user_details.username }}")
+    },3000)
+
+</script>
+{% endblock %}
