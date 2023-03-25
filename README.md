@@ -21,7 +21,16 @@
 ### Install requirements.txt:  
 ```pip install -r requirements.txt```
 
-### Create a new db.sqlite3 database if needed to store users
+### Create a new db.sqlite3 database (to store users)
+
+### Make migrations:
+```python manage.py makemigrations```
+
+### Migrate:
+```python manage.py migrate```
+
+### Create superuser:
+```python manage.py createsuperuser```
 
 ### In view.py write your firebase configuration lines
 
